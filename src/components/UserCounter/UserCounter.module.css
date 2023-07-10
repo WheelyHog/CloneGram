@@ -1,0 +1,9 @@
+.cnUserCounterCount {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.cnUserCounterWrapper {
+  display: flex;
+  align-items: center;
+}

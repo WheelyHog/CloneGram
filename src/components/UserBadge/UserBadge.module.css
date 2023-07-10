@@ -1,0 +1,26 @@
+.cnUserBadgeRoot {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+}
+
+.cnUserBadgeAvatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.cnUserBadgePlaceholder {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background-color: #c28686;
+}
+
+.cnUserBadgeName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
