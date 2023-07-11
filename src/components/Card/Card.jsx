@@ -7,6 +7,7 @@ export default function Card({ imgUrl, className, likes, comments, isLikedByYou,
 
   const [isModalVisisble, setModalVisible] = useState(false)
   const [comment, setComment] = useState('')
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
 
   return (
     <div className={cn(s.cnCardRoot, className)}>

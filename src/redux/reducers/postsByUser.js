@@ -2,7 +2,8 @@ import { GET_POSTS_FAILED, GET_POSTS_STARTED, GET_POSTS_SUCCESS } from "../actio
 
 const inititalState = {
   posts: [],
-  isPostsLoading: true
+  isPostsLoading: true,
+  isPostsError: false
 }
 
 export const postsByUserReducer = (state = inititalState, action) => {
@@ -14,11 +15,12 @@ export const postsByUserReducer = (state = inititalState, action) => {
       return {
         ...state,
         isPostsLoading: false,
-        posts: action.payload
+        posts: action.payload,
+        isPostsError: false
       }
 
     case GET_POSTS_FAILED:
-      return { ...state, isPostsLoading: false }
+      return { ...state, isPostsLoading: false, isPostsError: true }
 
     default:
       return { ...state }

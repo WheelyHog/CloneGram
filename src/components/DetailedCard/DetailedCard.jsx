@@ -6,6 +6,7 @@ import cn from 'classnames'
 import { nanoid } from 'nanoid'
 import PhotoModal from '../PhotoModal/PhotoModal'
 import TextArea from '../TextArea/TextArea'
+import { Bars } from 'react-loader-spinner'
 
 export default function DetailedCard({ username, avatarUrl, userId, imgUrl, likes, isLikedByYou, comments, onLikeClick, id, onCommentSendClick, mutateLoading }) {
 
@@ -26,6 +27,7 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
   const [isCommentsShown, setIsCommentsShown] = useState(false)
   const [comment, setComment] = useState('')
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
 
   const handleSendCommentClick = () => {
     if (comment) {
@@ -50,7 +52,8 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
         <UserBadge nickname={username} avatarUrl={avatarUrl} id={userId} />
       </div>
       <div>
-        <img src={imgUrl} alt={'img'} className={s.cnDetailedCardImg} />
+        {!isImageLoaded && <div className={s.cnImageLoader}><Bars width={15} height={15} /></div>}
+        <img src={imgUrl} alt={'img'} className={cn(s.cnDetailedCardImg, isImageLoaded && s.cnDetailedCardImgLoaded)} onLoad={() => setIsImageLoaded(true)} />
       </div>
       <div className={s.cnDetailedCardButtons}>
         <i className={`${isLikedByYou ? 'fas' : 'far'} fa-heart`} onClick={() => onLikeClick(id)} />

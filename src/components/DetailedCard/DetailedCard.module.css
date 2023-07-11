@@ -19,6 +19,12 @@
 .cnDetailedCardImg {
   height: 300px;
   width: 100%;
+  opacity: 0;
+  transition: 1s;
+}
+
+.cnDetailedCardImgLoaded {
+  opacity: 1;
 }
 
 .cnDetailedCardButtons {
@@ -48,4 +54,10 @@
   font-size: 14px;
   cursor: pointer;
   color: #dbdbdb;
+}
+
+.cnImageLoader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

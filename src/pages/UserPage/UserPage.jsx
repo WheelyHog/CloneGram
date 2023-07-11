@@ -15,8 +15,10 @@ export default function UserPage() {
   const authorizedUser = useSelector(state => state.users.authorizedUser)
   const user = useSelector(state => state.users.user)
   const posts = useSelector(state => state.postsByUser.posts)
+  const isPostsError = useSelector(state => state.postsByUser.isPostsError)
   const isPostsLoading = useSelector(state => state.postsByUser.isPostsLoading)
   const isUserLoading = useSelector(state => state.users.isUserLoading)
+  const isUserError = useSelector(state => state.users.isUserError)
   const mutateLoading = useSelector(state => state.photos.isMutateLoading)
   const [postsForRender, setPostsForRender] = useState([])
   const [page, setPage] = useState(0)
@@ -61,7 +63,7 @@ export default function UserPage() {
           <Bars color={'#000BFF'} height='80' width='80' />
         </div>
           : <div className={s.cnUserPageRoot}>
-            <UserBio
+            {!isUserError && <UserBio
               avatarUrl={user.avatarUrl}
               nickname={user.nickname}
               subscribed={user.subscribed.length}
@@ -72,7 +74,7 @@ export default function UserPage() {
               url={user.url}
               isMyPage={id == authorizedUser.id}
               isSubscribed={user.subscribers.includes(authorizedUser.id)}
-            />
+            />}
             <div className={s.cnUserPageRootContent}>
               {postsForRender.length ?
                 <InfiniteScroll
@@ -103,7 +105,7 @@ export default function UserPage() {
                       onCommentSubmit={(comment) => onCommentSendClick(id, comment)}
                     />)}
                 </InfiniteScroll>
-                : <p className={s.cnNoUserPosts}>User don't have posts!</p>}
+                : !isPostsError && <p className={s.cnNoUserPosts}>User don't have posts!</p>}
 
             </div>
           </div>}

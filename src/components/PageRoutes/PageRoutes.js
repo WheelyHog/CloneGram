@@ -34,7 +34,7 @@ export default function PageRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {authorizedUser ? authorizedRoutes.map(route => <Route {...route} key={route.path} />) : <Route path='/' element={<NoAccessPage />} />}
+        {authorizedUser ? authorizedRoutes.map(route => <Route {...route} key={route.path} />) : <Route path='*' element={<NoAccessPage />} />}
       </Routes>
     </BrowserRouter>
   )

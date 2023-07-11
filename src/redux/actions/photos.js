@@ -2,6 +2,7 @@ import { api } from '../../api'
 import { getPhotosFailed, getPhotosStarted, getPhotosSuccess, mutatePhotosFailed, mutatePhotosStarted, mutatePhotosSuccess, setPhotosTotal } from "../actionCreators/photos";
 import { getPhotoFromState, getUpdatedPhotoForState } from '../utils';
 
+
 export const getPhotos = (page = 1) => {
   return async (dispatch, getState) => {
     try {
