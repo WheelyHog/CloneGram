@@ -53,3 +53,11 @@
   max-height: 800px;
   padding: 10px;
 }
+
+.cnModalIcons {
+  padding: 10px;
+}
+
+.cnModalLikeIcon {
+  cursor: pointer;
+}

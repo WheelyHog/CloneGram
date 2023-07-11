@@ -10,3 +10,13 @@ export const getUpdatedPhotoForState = (photos, photoId, data) => {
 
   return newPhotos
 }
+
+export const getUserPagePostData = (posts, postId) => {
+  const newPosts = [...posts]
+  const newPostIndex = newPosts.findIndex(post => post.id === postId)
+  const postForEdit = newPosts[newPostIndex]
+
+  return {
+    newPosts, postForEdit
+  }
+}

@@ -1,8 +1,20 @@
-.cnRoot {
+.cnTextArea {
   border: none;
   background-color: #fff;
   padding: 10px;
   outline: none;
   resize: none;
   width: 88%;
+}
+
+.cnTextareaWrapper {
+  position: relative;
+  background-color: #fff;
+}
+
+.cnSendButton {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+
 }

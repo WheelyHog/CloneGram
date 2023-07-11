@@ -4,8 +4,24 @@ import Modal from 'react-modal'
 import UserBadge from '../UserBadge/UserBadge'
 import Comment from '../Comment/Comment'
 import TextArea from '../TextArea/TextArea'
+import { nanoid } from 'nanoid'
 
-export default function PhotoModal({ isOpen, onClose, imgUrl, username, avatarUrl, userId, comments, commentValue, setCommentValue, onCommentSubmit }) {
+export default function PhotoModal({
+  isOpen,
+  onClose,
+  imgUrl,
+  username,
+  avatarUrl,
+  userId,
+  comments,
+  commentValue,
+  setCommentValue,
+  onCommentSubmit,
+  isCommentLoading,
+  isLikedByYou,
+  onLikeClick
+
+}) {
 
   useEffect(() => {
     const body = document.querySelector('body')
@@ -28,14 +44,15 @@ export default function PhotoModal({ isOpen, onClose, imgUrl, username, avatarUr
               <UserBadge nickname={username} avatarUrl={avatarUrl} id={userId} />
             </div>
             <div className={s.cnModalComments}>
-              {comments.map(comment => <Comment {...comment} />)}
+              {comments.map(comment => <Comment {...comment} key={nanoid()} />)}
             </div>
           </div>
 
           <div className={s.cnModalIcons}>
-            <i className="far fa-heart" />
+            <i className={`${isLikedByYou ? 'fas' : 'far'} fa-heart`} onClick={onLikeClick} />
+            <i className="fas fa-comment" />
           </div>
-          <TextArea placeholder='Write comment...' value={commentValue} onChange={setCommentValue} />
+          <TextArea placeholder='Write comment...' value={commentValue} onChange={setCommentValue} buttonText={'Send'} onSubmit={onCommentSubmit} isLoading={isCommentLoading} />
         </div>
         <div>
 

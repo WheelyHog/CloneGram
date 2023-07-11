@@ -4,7 +4,6 @@ import UserBadge from '../UserBadge/UserBadge'
 import Comment from '../Comment/Comment'
 import cn from 'classnames'
 import { nanoid } from 'nanoid'
-import Button from '../Button/Button'
 import PhotoModal from '../PhotoModal/PhotoModal'
 import TextArea from '../TextArea/TextArea'
 
@@ -35,6 +34,16 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
     }
   }
 
+  const onCloseModal = () => {
+    setIsModalVisible(false)
+    setComment('')
+  }
+
+  const onOpenModal = () => {
+    setIsModalVisible(true)
+    setComment('')
+  }
+
   return (
     <div className={cn(s.cnDetailedCardRoot)}>
       <div className={s.cnDaetailedCardHeader}>
@@ -53,9 +62,8 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
       <div className={s.cnDetailedCardComments}>
         {renderComments()}
       </div>
+      <TextArea placeholder='Write comment...' value={comment} onChange={setComment} isLoading={mutateLoading} onSubmit={handleSendCommentClick} buttonText={'Send'} />
       <div className={s.cnDetailedCardTextareaWrapper}>
-        <TextArea placeholder='Write comment...' value={comment} onChange={setComment} />
-        <Button className={s.cnDetailedCardSendButton} onClick={handleSendCommentClick} disabled={mutateLoading}>Send</Button>
       </div>
       <PhotoModal
         username={username}
@@ -67,6 +75,10 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
         commentValue={comment}
         setCommentValue={setComment}
         onCommentSubmit={handleSendCommentClick}
+        isCommentLoading={mutateLoading}
+        imgUrl={imgUrl}
+        isLikedByYou={isLikedByYou}
+        onLikeClick={onLikeClick}
       />
     </div>
   )

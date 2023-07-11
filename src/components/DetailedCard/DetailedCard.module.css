@@ -49,15 +49,3 @@
   cursor: pointer;
   color: #dbdbdb;
 }
-
-.cnDetailedCardTextareaWrapper {
-  position: relative;
-  background-color: #fff;
-}
-
-.cnDetailedCardSendButton {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-
-}
