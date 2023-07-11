@@ -5,6 +5,8 @@ import Comment from '../Comment/Comment'
 import cn from 'classnames'
 import { nanoid } from 'nanoid'
 import Button from '../Button/Button'
+import PhotoModal from '../PhotoModal/PhotoModal'
+import TextArea from '../TextArea/TextArea'
 
 export default function DetailedCard({ username, avatarUrl, userId, imgUrl, likes, isLikedByYou, comments, onLikeClick, id, onCommentSendClick, mutateLoading }) {
 
@@ -24,6 +26,7 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
 
   const [isCommentsShown, setIsCommentsShown] = useState(false)
   const [comment, setComment] = useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const handleSendCommentClick = () => {
     if (comment) {
@@ -42,7 +45,7 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
       </div>
       <div className={s.cnDetailedCardButtons}>
         <i className={`${isLikedByYou ? 'fas' : 'far'} fa-heart`} onClick={() => onLikeClick(id)} />
-        <i className="fas fa-comment" />
+        <i className="fas fa-comment" onClick={() => setIsModalVisible(true)} />
       </div>
       <div className={s.cnDetailedCardLikes}>
         {`${likes} people appreciated`}
@@ -51,10 +54,20 @@ export default function DetailedCard({ username, avatarUrl, userId, imgUrl, like
         {renderComments()}
       </div>
       <div className={s.cnDetailedCardTextareaWrapper}>
-        <textarea className={s.cnDetailedCardTextarea} placeholder='Write comment...' value={comment} onChange={e => setComment(e.target.value)} />
+        <TextArea placeholder='Write comment...' value={comment} onChange={setComment} />
         <Button className={s.cnDetailedCardSendButton} onClick={handleSendCommentClick} disabled={mutateLoading}>Send</Button>
       </div>
-
+      <PhotoModal
+        username={username}
+        avatarUrl={avatarUrl}
+        userId={userId}
+        isOpen={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        comments={comments}
+        commentValue={comment}
+        setCommentValue={setComment}
+        onCommentSubmit={handleSendCommentClick}
+      />
     </div>
   )
 }

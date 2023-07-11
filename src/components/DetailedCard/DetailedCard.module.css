@@ -44,15 +44,6 @@
   cursor: pointer;
 }
 
-.cnDetailedCardTextarea {
-  border: none;
-  background-color: #fff;
-  padding: 10px;
-  outline: none;
-  resize: none;
-  width: 88%;
-}
-
 .cnDetailedCardCommentTitle {
   font-size: 14px;
   cursor: pointer;
