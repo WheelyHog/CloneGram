@@ -1,5 +1,5 @@
 import { getPhotos, mutatePhoto } from './photos';
-import { getUser } from './users';
+import { getUser, mutateUser } from './users';
 import { getPostsByUser, mutatePosts } from './postsByUser';
 
 export const api = {
@@ -8,7 +8,8 @@ export const api = {
     mutatePhoto
   },
   users: {
-    getUser
+    getUser,
+    mutateUser
   },
   postsByUser: {
     getPostsByUser,

@@ -8,7 +8,7 @@ import { getPostsByUser, sendCommentOnUserPage, toggleLikeOnPost } from '../../r
 import s from './UserPage.module.css'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Bars } from 'react-loader-spinner'
-import { getUser } from '../../redux/actions/users'
+import { getUser, mutateUser } from '../../redux/actions/users'
 
 export default function UserPage() {
 
@@ -18,6 +18,7 @@ export default function UserPage() {
   const isPostsError = useSelector(state => state.postsByUser.isPostsError)
   const isPostsLoading = useSelector(state => state.postsByUser.isPostsLoading)
   const isUserLoading = useSelector(state => state.users.isUserLoading)
+  const isUserMutateLoading = useSelector(state => state.users.isUserMutateLoading)
   const isUserError = useSelector(state => state.users.isUserError)
   const mutateLoading = useSelector(state => state.photos.isMutateLoading)
   const [postsForRender, setPostsForRender] = useState([])
@@ -54,6 +55,9 @@ export default function UserPage() {
     setPage(page + 1)
   }
 
+  const onEdit = async (data) => {
+    await dispatch(mutateUser(data, user.id))
+  }
 
   return (
     <div>
@@ -74,6 +78,8 @@ export default function UserPage() {
               url={user.url}
               isMyPage={id == authorizedUser.id}
               isSubscribed={user.subscribers.includes(authorizedUser.id)}
+              onEdit={onEdit}
+              formLoading={isUserMutateLoading}
             />}
             <div className={s.cnUserPageRootContent}>
               {postsForRender.length ?

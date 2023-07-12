@@ -1,25 +1,43 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Button from '../Button/Button'
+import FormTextArea from '../FormTextArea/FormTextArea'
 import Input from '../Input/Input'
 import UserCounter from '../UserCounter/UserCounter'
 import s from './UserBio.module.css'
 
-const validateText = (text) => {
+const validateText = (text, cb) => {
   if (!text) {
+    cb('Field Required!')
     return true
   }
 
   if (text < 3) {
+    cb('Too short text!')
     return true
   }
 
   if (/\s/g.test(text)) {
+    cb('No backspaces!')
     return true
   }
   return false
 }
 
-export default function UserBio({ avatarUrl, nickname, subscribed, subscribers, firstname, lastname, description, url, isMyPage, isSubscribed }) {
+const requiredText = 'Field required'
+
+const validateUrl = (text, cb) => {
+  if (!text) {
+    cb('Field Required!')
+    return true
+  }
+
+  if (/^(ftp|http|https):\/\/[^ "]+$/.test(text)) {
+    cb('Non-valid link')
+    return true
+  }
+}
+
+export default function UserBio({ avatarUrl, nickname, subscribed, subscribers, firstname, lastname, description, url, isMyPage, isSubscribed, onEdit, formLoading }) {
 
   const [btnProps, setBtnProps] = useState({ onClick: () => false, children: "Subscribe" })
   const [isEditMode, setIsEditMode] = useState(false)
@@ -28,34 +46,48 @@ export default function UserBio({ avatarUrl, nickname, subscribed, subscribers, 
   const [formLastName, setFormLastName] = useState(lastname)
   const [formDescription, setFormDescription] = useState(description)
   const [formUrl, setFormtUrl] = useState(url)
+  const [userNameError, setUserNameError] = useState('')
+  const [firstNameError, setFirstNameError] = useState('')
+  const [lastNameError, setLastNameError] = useState('')
+  const [descriptionError, setDescriptionError] = useState('')
+  const [urlError, setUrlError] = useState('')
 
-  const onSaveEditForm = useCallback(() => {
-    setIsEditMode(false)
 
-    let isErrors = validateText(formUserName) || validateText(formFirstName) || validateText(formLastName);
+  const onSaveEditForm = useCallback(async () => {
 
-    if (!formUrl) {
+    const isUserNameError = validateText(formUserName, setUserNameError)
+    const isFirstNameError = validateText(formFirstName, setFirstNameError)
+    const isLastNameError = validateText(formLastName, setFormLastName)
+    const isUrlError = validateUrl(formUrl, setUrlError)
 
-    }
-
-    if (/^(ftp|http|https):\/\/[^ "]+$/.test(formUrl)) {
-
-    }
+    let isErrors = isUserNameError || isFirstNameError || isLastNameError || isUrlError
 
     if (!formDescription) {
-
+      isErrors = true
+      setDescriptionError(requiredText)
+      return
     }
 
     if (isErrors) {
       return
     }
-    alert('success')
-  }, [formUserName])
+
+    setIsEditMode(false)
+
+    await onEdit({
+      firstname: formFirstName,
+      lastname: formLastName,
+      nickname: formUserName,
+      description: formDescription,
+      url: formUrl
+    })
+
+  }, [formUserName, formFirstName, formLastName, formUrl, formDescription])
 
   useEffect(() => {
     if (isMyPage) {
       if (isEditMode) {
-        setBtnProps({ onClick: onSaveEditForm, children: "Save" })
+        setBtnProps({ onClick: onSaveEditForm, children: "Save", disabled: formLoading })
       } else {
         setBtnProps({ onClick: () => setIsEditMode(true), children: "Edit" })
       }
@@ -64,7 +96,7 @@ export default function UserBio({ avatarUrl, nickname, subscribed, subscribers, 
     } else {
       setBtnProps({ onClick: () => false, children: "Subscribe" })
     }
-  }, [isMyPage, isSubscribed, isEditMode, onSaveEditForm])
+  }, [isMyPage, isSubscribed, isEditMode, onSaveEditForm, formLoading])
 
 
   const fields = useMemo(() => {
@@ -73,11 +105,11 @@ export default function UserBio({ avatarUrl, nickname, subscribed, subscribers, 
         username: <Input value={formUserName} onChange={({ target: { value } }) => setFormUserName(value)} errorText='required' className={s.cnInput} />,
         name:
           <>
-            <Input value={formFirstName} onChange={({ target: { value } }) => setFormFirstName(value)} className={s.cnInput} errorText='required' />
-            <Input value={formLastName} onChange={({ target: { value } }) => setFormLastName(value)} className={s.cnInput} errorText='required' />
+            <Input value={formFirstName} onChange={({ target: { value } }) => setFormFirstName(value)} className={s.cnInput} errorText={firstNameError} />
+            <Input value={formLastName} onChange={({ target: { value } }) => setFormLastName(value)} className={s.cnInput} errorText={lastNameError} />
           </>,
-        description: <textarea value={formDescription} onChange={({ target: { value } }) => setFormDescription(value)} />,
-        url: <Input value={formUrl} onChange={({ target: { value } }) => setFormtUrl(value)} />
+        description: <FormTextArea value={formDescription} onChange={({ target: { value } }) => setFormDescription(value)} className={s.cnInput} errorText={descriptionError} />,
+        url: <Input value={formUrl} onChange={({ target: { value } }) => setFormtUrl(value)} errorText={urlError} />
       }
     }
     return {
@@ -87,7 +119,7 @@ export default function UserBio({ avatarUrl, nickname, subscribed, subscribers, 
       url: <a href={url}>{url}</a>
 
     }
-  }, [isEditMode, firstname, lastname, description, url, nickname, formFirstName, formLastName, formUserName, formDescription, formUrl])
+  }, [isEditMode, firstname, lastname, description, url, nickname, formFirstName, formLastName, formUserName, formDescription, formUrl, firstNameError, userNameError, descriptionError, urlError])
 
   return (
     <div className={s.cnUserBioRoot}>
